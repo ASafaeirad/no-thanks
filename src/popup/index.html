@@ -2,11 +2,40 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>No Thanks</title>
   </head>
   <body>
-    <div id="app">
-      <h1>Welcome</h1>
-    </div>
+    <main class="panel">
+      <header class="header">
+        <div>
+          <h1>No Thanks</h1>
+        </div>
+      </header>
+
+      <section class="control-row" aria-labelledby="enabled-label">
+        <div>
+          <h2 id="enabled-label">Blocking</h2>
+          <p id="enabled-status">Loading settings...</p>
+        </div>
+        <label class="switch">
+          <span class="sr-only">Enable blocking</span>
+          <input type="checkbox" id="enabled-toggle" />
+          <span class="slider"></span>
+        </label>
+      </section>
+
+      <section class="site-box" aria-labelledby="current-site-label">
+        <h2 id="current-site-label">Current site</h2>
+        <p class="domain" id="current-domain">Detecting current site...</p>
+        <button class="full" type="button" id="toggle-whitelist">Toggle Whitelist</button>
+        <p id="site-status" class="status"></p>
+      </section>
+
+      <p id="message" class="message error" role="status" aria-live="polite"></p>
+      <p class="version" id="version">Local banner blocking</p>
+    </main>
+
     <script type="module" src="./main.js"></script>
   </body>
 </html>

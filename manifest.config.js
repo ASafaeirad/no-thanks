@@ -22,7 +22,6 @@ export default defineManifest({
       js: ['src/content/main.js'],
       matches: ['https://*/*'],
       run_at: 'document_start',
-      all_frames: true,
     },
   ],
   permissions: ['storage', 'activeTab'],

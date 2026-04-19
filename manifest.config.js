@@ -3,12 +3,15 @@ import pkg from './package.json';
 
 export default defineManifest({
   manifest_version: 3,
-  name: pkg.name,
+  name: 'No Thanks: Cookie Banner Blocker',
+  short_name: 'No Thanks',
   version: pkg.version,
+  description: pkg.description,
   icons: {
     48: 'public/logo.png',
   },
   action: {
+    default_title: 'No Thanks',
     default_icon: {
       48: 'public/logo.png',
     },
@@ -18,7 +21,9 @@ export default defineManifest({
     {
       js: ['src/content/main.js'],
       matches: ['https://*/*'],
+      run_at: 'document_start',
+      all_frames: true,
     },
   ],
-  permissions: ['contentSettings'],
+  permissions: ['storage', 'activeTab'],
 });

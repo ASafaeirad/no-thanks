@@ -1,0 +1,20 @@
+{
+  "name": "no-thanks",
+  "type": "module",
+  "description": "Hide cookie consent banners gracefully",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "biome lint",
+    "format": "biome check --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "@crxjs/vite-plugin": "2.4.0",
+    "@types/chrome": "0.1.40",
+    "vite": "8.0.8",
+    "vite-plugin-zip-pack": "1.2.4"
+  }
+}

@@ -2,6 +2,10 @@
 
 No Thanks is a small Chromium Manifest V3 extension that hides common cookie consent banners.
 
+## How it works?
+It detects provider, removes banner element and cleans up side-effects.
+Providers are implemented in [./src/providers](./src/providers/).
+
 ## Install from Release (Manual)
 
 1. Open the [Releases](https://github.com/ASafaeirad/no-thanks/releases) page.
@@ -15,8 +19,11 @@ No Thanks is a small Chromium Manifest V3 extension that hides common cookie con
 ## Load Unpacked (Local Build)
 
 0. Clone the code
-1. Build the extension using `pnpm build`
+1. Build the unpacked using `pnpm dev`
 2. Open `chrome://extensions` in Chrome, Edge, Brave, or another Chromium browser.
 3. Enable Developer Mode.
 4. Click Load unpacked.
 5. Select the `dist` folder.
+
+## Found an unsupported Banner?
+Let me know :)

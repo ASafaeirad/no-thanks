@@ -1,28 +1,38 @@
-import DEFAULTS from './defaults';
-
 // @ts-check
+
+/** @typedef {Object} StorageSettings
+ *  @property {boolean} enabled
+ *  @property {string[]} whitelistDomains
+ */
+
+/** @type {StorageSettings} */
+const DEFAULT_SETTINGS = {
+  enabled: true,
+  whitelistDomains: [],
+};
+
 class Storage {
-  constructor(defaults) {
-    this.defaults = {
-      enabled: defaults.enabled,
-      whitelistDomains: Array.from(defaults.whitelistDomains),
-      selectors: Array.from(defaults.selectors),
-    };
-    this.settings = this.defaults;
-    this.changeCallbacks = [];
-  }
+  /** @type {Function[]} */
+  changeCallbacks = [];
+  /** @type {StorageSettings} */
+  settings = DEFAULT_SETTINGS;
 
   async load() {
     this.settings = await this.#getStorage();
     return this.settings;
   }
 
+  /**
+   * @param {Partial<StorageSettings>} items
+   */
   async set(items) {
-    await new Promise((resolve) => {
-      chrome.storage.local.set(items, () => {
-        resolve();
-      });
-    });
+    await /** @type {Promise<void>} */ (
+      new Promise((resolve) => {
+        chrome.storage.local.set(items, () => {
+          resolve();
+        });
+      })
+    );
     return this.load();
   }
 
@@ -30,10 +40,9 @@ class Storage {
     return this.settings.enabled;
   }
 
-  get selectors() {
-    return this.settings.selectors;
-  }
-
+  /**
+   * @param {Function} callback
+   */
   onChange(callback) {
     this.changeCallbacks.push(callback);
   }
@@ -42,13 +51,16 @@ class Storage {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName !== 'local') return;
 
-      const relevantKeys = ['enabled', 'whitelistDomains', 'selectors'];
+      const relevantKeys = ['enabled', 'whitelistDomains'];
       if (relevantKeys.some((key) => Object.hasOwn(changes, key))) {
         this.#handleStorageChange();
       }
     });
   }
 
+  /**
+   * @param {string} domain
+   */
   isWhitelist(domain) {
     const normalized = this.normalizeDomain(domain);
     if (!normalized) return true;
@@ -64,26 +76,35 @@ class Storage {
 
   async #getStorage() {
     return new Promise((resolve) => {
-      chrome.storage.local.get(this.defaults, (items) => {
+      chrome.storage.local.get(DEFAULT_SETTINGS, (items) => {
         resolve(this.#normalizeSettings(items));
       });
     });
   }
 
+  /**
+   *
+   * @param {*} raw
+   */
   #normalizeSettings(raw) {
     return {
       enabled: raw.enabled !== false,
       whitelistDomains: this.normalizeDomains(raw.whitelistDomains),
-      selectors: this.#normalizeSelectors(raw.selectors),
     };
   }
 
+  /**
+   * @param {string[]} value
+   */
   normalizeDomains(value) {
     if (!Array.isArray(value)) return [];
     const domains = value.map((domain) => this.normalizeDomain(domain)).filter(Boolean);
     return Array.from(new Set(domains));
   }
 
+  /**
+   * @param {string} value
+   */
   normalizeDomain(value) {
     if (typeof value !== 'string') return '';
 
@@ -104,34 +125,24 @@ class Storage {
     return domain;
   }
 
-  #normalizeSelectors(value) {
-    if (!Array.isArray(value)) return [];
-
-    const selectors = value
-      .map((selector) => (typeof selector === 'string' ? selector.trim() : ''))
-      .filter((selector) => selector && !selector.startsWith('//'))
-      .filter(this.isValidSelector);
-
-    return Array.from(new Set(selectors));
-  }
-
-  isValidSelector(selector) {
-    try {
-      document.createDocumentFragment().querySelector(selector);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
+  /**
+   * @param {string} hostname
+   * @param {string[]} domains
+   */
   matchesDomain(hostname, domains) {
     return domains.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
   }
 
+  /**
+   * @param {string} domain
+   */
   isWhitelisted(domain) {
     return this.matchesDomain(domain, this.settings.whitelistDomains);
   }
 
+  /**
+   * @param {*} domain
+   */
   async addToWhitelist(domain) {
     const normalized = this.normalizeDomain(domain);
     if (!normalized) return false;
@@ -144,6 +155,9 @@ class Storage {
     return true;
   }
 
+  /**
+   * @param {*} domain
+   */
   async removeFromWhitelist(domain) {
     const normalized = this.normalizeDomain(domain);
     if (!normalized) return false;
@@ -155,4 +169,4 @@ class Storage {
   }
 }
 
-export const storage = new Storage(DEFAULTS);
+export const storage = new Storage();

@@ -20,7 +20,7 @@ export default defineManifest({
   content_scripts: [
     {
       js: ['src/content/main.js'],
-      matches: ['https://*/*'],
+      matches: ['https://*/*', 'http://*/*'],
       run_at: 'document_start',
     },
   ],

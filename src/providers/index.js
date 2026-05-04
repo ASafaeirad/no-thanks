@@ -1,4 +1,5 @@
 export * from './cookiebot';
+export * from './google-funding';
 export * from './iubenda';
 export * from './onetrust';
 export * from './reddit';

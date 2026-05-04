@@ -15,7 +15,7 @@ async function run() {
     attributes: true,
     attributeFilter: ['class', 'style'],
   });
-  setTimeout(() => observer.disconnect(), 3000);
+  setTimeout(() => observer.disconnect(), provider.delay ?? 3000);
 }
 
 export function hide(selectors) {

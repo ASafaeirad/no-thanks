@@ -3,3 +3,4 @@ export * from './google-funding';
 export * from './iubenda';
 export * from './onetrust';
 export * from './reddit';
+export * from './steam';

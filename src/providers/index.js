@@ -1,3 +1,4 @@
+export * from './complianz';
 export * from './cookiebot';
 export * from './google-funding';
 export * from './iubenda';

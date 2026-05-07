@@ -1,6 +1,7 @@
 export * from './complianz';
 export * from './consentmanager';
 export * from './cookiebot';
+export * from './fides';
 export * from './google-funding';
 export * from './iubenda';
 export * from './mms';

@@ -2,7 +2,7 @@
   "name": "no-thanks",
   "type": "module",
   "description": "Hide cookie consent banners gracefully",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
   "scripts": {
     "dev": "vite",

@@ -3,6 +3,7 @@ export * from './consentmanager';
 export * from './cookiebot';
 export * from './google-funding';
 export * from './iubenda';
+export * from './mms';
 export * from './onetrust';
 export * from './reddit';
 export * from './setupad';

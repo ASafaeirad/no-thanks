@@ -1,3 +1,4 @@
+export * from './cc-banner';
 export * from './complianz';
 export * from './consentmanager';
 export * from './cookiebot';
